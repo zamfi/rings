@@ -1,0 +1,43 @@
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script type="text/javascript">
+  
+  
+  
+  $(function() {
+    var svg = $('#ring-preview');
+    function setAttribute(id, attributes) {
+      svg.find('#'+id).attr(attributes);
+    }
+  
+    function setDimensions(innerDiameter, gauge) {
+      setAttribute('inner-diameter', {r: innerDiameter});
+      setAttribute()
+    }    
+  });
+  </script>
+</head>
+<body>
+
+<svg id="ring-preview" style="width: 500px; height: 500px; border: 1px solid #ccc;">
+  <defs>
+    <marker id="markerCircle" markerWidth="8" markerHeight="8" refx="5" refy="5">
+      <circle cx="5" cy="5" r="3" style="stroke: none; fill:#000000;"/>
+    </marker>
+
+    <marker id="markerArrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
+      <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #000000;" />
+    </marker>
+  </defs>
+  
+  <g id="centered-ring" transform="translate(250, 250)">
+    <path d="">
+    
+    <circle id="outer-diameter" cx=0 cy=0 r="105" fill="black" stroke="none" />
+    <circle id="inner-diameter" cx=0 cy=0 r="100" fill="white" stroke="none" />
+  </g>
+</svg>
+
+</body>
+</html>
