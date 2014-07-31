@@ -49,10 +49,10 @@
       setDimensions(innerDiameter/64, gauge);
     }
     
-    function generateDatalists(){
+    function generateDatalists(scale){
     	var inch_diameters = inner_diameters.Inches;
     	Object.keys(inch_diameters).forEach(function(key){ 
-    		$('#inch_diameters').append('<option>'+key+'</option>');
+    		$(scale).append('<option>'+key+'</option>');
     	});
     }
     
@@ -60,7 +60,7 @@
     $('#gauge-slider').on('change', pullDimensions);
     
     setDimensions(10/64, 18);
-    generateDatalists();
+    generateDatalists('#inch_diameters');
   });
   </script>
 </head>
