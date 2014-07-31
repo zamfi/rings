@@ -3,7 +3,7 @@
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script type="text/javascript">
   
-  
+  var SCALE = 500;
   
   $(function() {
     var svg = $('#ring-preview');
@@ -11,10 +11,47 @@
       svg.find('#'+id).attr(attributes);
     }
   
+    function gaugeDiameter(gauge) {
+      return 0.005 * Math.pow(92, (36-gauge)/39);
+    }
+  
+    function diameterScale(angleOffset, diameter) {
+      var p1 = {
+        x: -diameter/2 * Math.cos(angleOffset*Math.PI/180),
+        y: -diameter/2 * Math.sin(angleOffset*Math.PI/180)
+      };
+      var p2 = {
+        x: -p1.x,
+        y: -p1.y
+      };
+      var d = "M"+p1.x+","+p1.y+" L"+p2.x+","+p2.y;
+      return d;
+    }
+  
     function setDimensions(innerDiameter, gauge) {
-      setAttribute('inner-diameter', {r: innerDiameter});
-      setAttribute()
-    }    
+      setAttribute('inner-diameter', {r: innerDiameter/2});
+      setAttribute('outer-diameter', {r: innerDiameter/2 + gaugeDiameter(gauge)});
+      
+      setAttribute('inner-diameter-scale', {d: diameterScale(20, innerDiameter)});
+      $('#inner-diameter-slider').val(innerDiameter*64);
+      $('#gauge-slider').val(gauge);
+    }
+    
+    function setDimentionsMm(innerDiameter, gauge) {
+      setDimensions(innerDiameter / 2.54, gauge);
+    }
+    
+    function pullDimensions() {
+      var innerDiameter = $('#inner-diameter-slider').val();
+      var gauge = $('#gauge-slider').val();
+      console.log("pulled", innerDiameter, ":", gauge);
+      setDimensions(innerDiameter/64, gauge);
+    }
+    
+    $('#inner-diameter-slider').on('change', pullDimensions);
+    $('#gauge-slider').on('change', pullDimensions);
+    
+    setDimensions(10/64, 18);
   });
   </script>
 </head>
@@ -31,13 +68,14 @@
     </marker>
   </defs>
   
-  <g id="centered-ring" transform="translate(250, 250)">
-    <path d="">
-    
-    <circle id="outer-diameter" cx=0 cy=0 r="105" fill="black" stroke="none" />
-    <circle id="inner-diameter" cx=0 cy=0 r="100" fill="white" stroke="none" />
+  <g id="centered-ring" transform="translate(250, 250) scale(500)">
+    <path id="inner-diameter-scale" stroke="black" stroke-width="0.01" />
+    <circle id="outer-diameter" cx=0 cy=0 r="0.41" fill="black" stroke="none" />
+    <circle id="inner-diameter" cx=0 cy=0 r="0.4" fill="white" stroke="none" />
   </g>
 </svg>
+<p>Inner diameter: 4/64 <input id="inner-diameter-slider" type="range" min="4" max="44" /> 44/64</p>
+<p>Gauge: 10 <input id="gauge-slider" type="range" min="10" max="22" /> 22</p>
 
 </body>
 </html>
