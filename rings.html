@@ -1,6 +1,7 @@
 <html>
 <head>
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="data.js"></script>
   <script type="text/javascript">
   
   var SCALE = 500;
@@ -48,10 +49,18 @@
       setDimensions(innerDiameter/64, gauge);
     }
     
+    function generateDatalists(){
+    	var inch_diameters = inner_diameters.Inches;
+    	Object.keys(inch_diameters).forEach(function(key){ 
+    		$('#inch_diameters').append('<option>'+key+'</option>');
+    	});
+    }
+    
     $('#inner-diameter-slider').on('change', pullDimensions);
     $('#gauge-slider').on('change', pullDimensions);
     
     setDimensions(10/64, 18);
+    generateDatalists();
   });
   </script>
 </head>
@@ -74,7 +83,8 @@
     <circle id="inner-diameter" cx=0 cy=0 r="0.4" fill="white" stroke="none" />
   </g>
 </svg>
-<p>Inner diameter: 4/64 <input id="inner-diameter-slider" type="range" min="4" max="44" /> 44/64</p>
+<p>Inner diameter: 4/64" <input id="inner-diameter-slider" name="id_inches" type="range" min="4" max="44"  list="inch_diameters"/> 44/64"</p>
+<datalist id=inch_diameters></datalist>
 <p>Gauge: 10 <input id="gauge-slider" type="range" min="10" max="22" /> 22</p>
 
 </body>
